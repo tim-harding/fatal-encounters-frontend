@@ -1,4 +1,5 @@
 import MarkerClusterer from "@google/markerclustererplus"
+import "./style.css"
 
 declare global {
   interface Window { initMap: () => void }
@@ -9,16 +10,8 @@ let people: any[] | null
 let clusterer: MarkerClusterer | null
 
 function main() {
-    prepareBody()
     loadMaps()
     getAllLocations()
-}
-
-function prepareBody(): void {
-    const div = document.createElement("div")
-    div.id = "map-target"
-    div.style.height = "500px"
-    document.body.appendChild(div)
 }
 
 function loadMaps(): void {

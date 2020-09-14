@@ -1,6 +1,17 @@
+import MarkerClusterer from "@google/markerclustererplus"
+
+declare global {
+  interface Window { initMap: () => void }
+}
+
+let map: google.maps.Map | null
+let people: any[] | null
+let clusterer: MarkerClusterer | null
+
 function main() {
     prepareBody()
     loadMaps()
+    getAllLocations()
 }
 
 function prepareBody(): void {
@@ -28,8 +39,6 @@ function mapsApiUrl(): string {
     return href
 }
 
-let map: google.maps.Map
-
 function initMap(): void {
     const target = document.getElementById("map-target") as HTMLElement
     map = new google.maps.Map(target, {
@@ -39,6 +48,38 @@ function initMap(): void {
         },
         zoom: 4,
     })
+    setMapLocations()
+}
+
+async function getAllLocations() {
+    const loc = window.location
+    const base = `${loc.protocol}//${loc.host}`;
+    const url = new URL("/api/incident", base);
+    const params = url.searchParams;
+    params.append("count", "-1");
+    params.append("rowKind", "mapping");
+    const resolved = await fetch(url.href);
+    const json = await resolved.json();
+    people = json.rows;
+    setMapLocations();
+}
+
+function setMapLocations() {
+    if (map && people) {
+        console.log("Setting map locations");
+        const markers = people.map(personToLocation);
+        clusterer = new MarkerClusterer(map, markers, {
+            imagePath: "https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m",
+        });
+    }
+}
+
+function personToLocation(person: any): google.maps.Marker {
+    const { lat, lng } = person.position
+    const marker = new google.maps.Marker({
+        position: new google.maps.LatLng(lat, lng),
+    })
+    return marker
 }
 
 main()

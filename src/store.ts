@@ -1,14 +1,4 @@
-interface Position {
-    lat: number,
-    lng: number,
-}
-
 interface Incident {
-    position: Position,
-    details: Details | null,
-}
-
-interface Details {
     name: string | null,
     age: number | null,
     isMale: boolean | null,
@@ -59,7 +49,7 @@ interface Filter {
 }
 
 export default class Store {
-    
+
     filter: Filter = {
         name: "",
         ageMax: null,
@@ -75,12 +65,53 @@ export default class Store {
         city: [],
     }
 
-    incidentMask: number[] | null = null
+    private mask: number[] | null = null
+    private incidents: Map<number, Incident> = new Map()
+    private positions: Map<number, google.maps.Marker> = new Map()
+    private cities: Map<number, City> = new Map()
+    private states: Map<number, State> = new Map()
+    listeners: { (): void } [] = []
 
-    incidents: Map<number, Incident> = new Map()
+    constructor() {
+        this.getAllLocations()
+    }
 
-    cities: Map<number, City> = new Map()
+    private async getAllLocations() {
+        const loc = window.location
+        const base = `${loc.protocol}//${loc.host}`;
+        const url = new URL("/api/incident", base);
+        const params = url.searchParams;
+        params.append("count", "-1");
+        params.append("rowKind", "position");
+        const resolved = await fetch(url.href);
+        const json = await resolved.json();
+        for (const row of json.rows) {
+            const { lat, lng } = row.position
+            const marker = new google.maps.Marker({
+                position: new google.maps.LatLng(lat, lng),
+            })
+            this.positions.set(row.id, marker)
+        }
+        for (const listener of this.listeners) {
+            listener()
+        }
+    }
 
-    states: Map<number, State> = new Map()
-
+    get markers(): google.maps.Marker[] {
+        const out: google.maps.Marker[] = []
+        if (this.mask) {
+            for (const id of this.mask) {
+                const position = this.positions.get(id)
+                if (position) {
+                    out.push(position)
+                }
+            }
+        } else {
+            for (const marker of this.positions.values()) {
+                out.push(marker)
+            }
+        }
+        return out
+    }
+    
 }

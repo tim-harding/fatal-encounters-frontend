@@ -1,8 +1,6 @@
 import SelectPill from "./components/SelectPill"
 import GMap from "./components/GMap"
 
-let people: any[] | null
-
 function main() {
     defineComponents()
     getAllLocations()
@@ -23,7 +21,10 @@ async function getAllLocations() {
     params.append("rowKind", "mapping");
     const resolved = await fetch(url.href);
     const json = await resolved.json();
-    people = json.rows;
+    const people = json.rows;
+    const markers = people.map(personToLocation)
+    const map = document.querySelector("fe-gmap") as GMap
+    map.setMarkers(markers)
 }
 
 function personToLocation(person: any): google.maps.Marker {

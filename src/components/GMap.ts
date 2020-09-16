@@ -19,7 +19,7 @@ export default class GMap extends HTMLElement {
         this.loadMaps()
     }
 
-    setMapLocations(markers: google.maps.Marker[]) {
+    setMarkers(markers: google.maps.Marker[]) {
         this.markers = markers
         this.update()
     }

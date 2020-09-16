@@ -1,0 +1,7 @@
+@import "general.css";
+
+.pill {
+    padding: 0.5rem 1rem;
+    background-color: gray;
+    border-radius: 5rem;
+}

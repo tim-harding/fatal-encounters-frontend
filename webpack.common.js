@@ -30,7 +30,7 @@ module.exports = {
       patterns: [
         {
           from: "src/public",
-          to: "dist/public",
+          to: "public",
         },
       ],
     }),

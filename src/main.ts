@@ -1,4 +1,5 @@
 import MarkerClusterer from "@google/markerclustererplus"
+import SelectPill from "./components/SelectPill"
 
 declare global {
   interface Window { initMap: () => void }
@@ -9,6 +10,7 @@ let people: any[] | null
 let clusterer: MarkerClusterer | null
 
 function main() {
+    defineComponents()
     loadMaps()
     getAllLocations()
 }
@@ -19,6 +21,10 @@ function loadMaps(): void {
     script.defer = true;
     window.initMap = initMap
     document.head.appendChild(script);
+}
+
+function defineComponents() {
+    customElements.define(SelectPill.tag, SelectPill)
 }
 
 function mapsApiUrl(): string {

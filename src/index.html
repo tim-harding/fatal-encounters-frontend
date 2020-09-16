@@ -6,40 +6,37 @@
     <meta name="description" content="Query tool for the Fatal Encounters database">
 
     <link rel="stylesheet" href="public/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
 
-    <link rel="preload" href="public/select.css" as="style">
-    <link rel="preload" href="public/select__pill.css" as="style">
-    <link rel="preload" href="public/select__option.css" as="style">
-    <link rel="preload" href="public/spinner.css" as="style">
+    <link rel="preload" href="public/fe-select.css" as="style">
+    <link rel="preload" href="public/fe-select-pill.css" as="style">
+    <link rel="preload" href="public/fe-select-option.css" as="style">
+    <link rel="preload" href="public/fe-spinner.css" as="style">
     
     <title>Fatal Encounters</title>
 </head>
+
 <body>
     <div id="map-target"></div>
-    <div id="filters">
-        
-    </div>
-    <div id="results">
-        <ul></ul>
-    </div>
+    <fe-select-pill></fe-select-pill>
 
-    <template id="select">
-        <link rel="stylesheet" href="public/select.css">
+    <template id="fe-select-template">
+        <link rel="stylesheet" href="public/fe-select.css">
         <input type="text" name="search" id="search">
         <div id="options" class="search-dropdown"></div>
     </template>
 
-    <template id="select__pill">
-        <link rel="stylesheet" href="public/select__pill.css">
-        <span class="search-result-pill">
+    <template id="fe-select-pill-template">
+        <link rel="stylesheet" href="public/fe-select-pill.css">
+        <span class="pill">
             <slot>
                 <span>Example</span>
             </slot>
         </span>
     </template>
 
-    <template id="select__option">
-        <link rel="stylesheet" href="public/select__option.css">
+    <template id="fe-select-option-template">
+        <link rel="stylesheet" href="public/fe-select-option.css">
         <div class="select-option">
             <slot name="content">
                 <span>Example</span>
@@ -47,8 +44,8 @@
         </div>
     </template>
 
-    <template id="spinner">
-        <link rel="stylesheet" href="public/spinner.css">
+    <template id="fe-spinner-template">
+        <link rel="stylesheet" href="public/fe-spinner.css">
         <!-- Todo: Replace with an actual spinner -->
         <span>Searching...</span>
     </template>

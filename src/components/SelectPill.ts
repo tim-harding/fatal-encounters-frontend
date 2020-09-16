@@ -1,19 +1,12 @@
+import fromTemplate from "./fromTemplate"
+
 export default class SelectPill extends HTMLElement {
+
+    static readonly TAG = "fe-select-pill"
+
     constructor() {
         super()
-        this.createContent()
+        fromTemplate.bind(this)(SelectPill.TAG)
     }
 
-    static get tag() {
-        return "fe-select-pill"
-    }
-
-    createContent() {
-        const shadow = this.attachShadow({
-            mode: "open",
-        })
-        const template = document.getElementById(`${SelectPill.tag}-template`) as HTMLTemplateElement
-        const content = template.content.cloneNode(true)
-        shadow.appendChild(content)
-    }
 }

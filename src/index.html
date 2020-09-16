@@ -12,12 +12,13 @@
     <link rel="preload" href="public/fe-select-pill.css" as="style">
     <link rel="preload" href="public/fe-select-option.css" as="style">
     <link rel="preload" href="public/fe-spinner.css" as="style">
+    <link rel="preload" href="public/fe-gmap.css" as="style">
     
     <title>Fatal Encounters</title>
 </head>
 
 <body>
-    <div id="map-target"></div>
+    <fe-gmap></fe-gmap>
     <fe-select-pill></fe-select-pill>
 
     <template id="fe-select-template">
@@ -48,6 +49,11 @@
         <link rel="stylesheet" href="public/fe-spinner.css">
         <!-- Todo: Replace with an actual spinner -->
         <span>Searching...</span>
+    </template>
+
+    <template id="fe-gmap-template">
+        <link rel="stylesheet" href="public/fe-gmap.css">
+        <div id="map-target"></div>
     </template>
 </body>
 </html>

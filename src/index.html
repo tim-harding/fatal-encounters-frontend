@@ -4,6 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Query tool for the Fatal Encounters database">
+
+    <link rel="stylesheet" href="public/style.css">
+
+    <link rel="preload" href="public/select.css" as="style">
+    <link rel="preload" href="public/select__pill.css" as="style">
+    <link rel="preload" href="public/select__option.css" as="style">
+    <link rel="preload" href="public/spinner.css" as="style">
+    
     <title>Fatal Encounters</title>
 </head>
 <body>
@@ -14,5 +22,35 @@
     <div id="results">
         <ul></ul>
     </div>
+
+    <template id="select">
+        <link rel="stylesheet" href="public/select.css">
+        <input type="text" name="search" id="search">
+        <div id="options" class="search-dropdown"></div>
+    </template>
+
+    <template id="select__pill">
+        <link rel="stylesheet" href="public/select__pill.css">
+        <span class="search-result-pill">
+            <slot>
+                <span>Example</span>
+            </slot>
+        </span>
+    </template>
+
+    <template id="select__option">
+        <link rel="stylesheet" href="public/select__option.css">
+        <div class="select-option">
+            <slot name="content">
+                <span>Example</span>
+            </slot>
+        </div>
+    </template>
+
+    <template id="spinner">
+        <link rel="stylesheet" href="public/spinner.css">
+        <!-- Todo: Replace with an actual spinner -->
+        <span>Searching...</span>
+    </template>
 </body>
 </html>

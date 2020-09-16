@@ -1,5 +1,4 @@
 import MarkerClusterer from "@google/markerclustererplus"
-import "./style.css"
 
 declare global {
   interface Window { initMap: () => void }

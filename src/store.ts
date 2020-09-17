@@ -75,14 +75,23 @@ export default class Store {
     readonly mask: number[] | null = null
     readonly incidents: Rows<Incident> = new Map()
     readonly positions: Rows<google.maps.Marker> = new Map()
+
     readonly cities: Rows<City> = new Map()
     readonly states: Rows<State> = new Map()
-    readonly races: Enums = new Map()
-    readonly counties: Enums = new Map()
-    readonly agencies: Enums = new Map()
-    readonly causes: Enums = new Map()
-    readonly usesOfForce: Enums = new Map()
-    readonly listeners: { (): void } [] = []
+
+    readonly enums: Map<string, Enums> = new Map()
+
+    readonly listeners: { (): void }[] = []
+
+    constructor() {
+        this.prepareEnums()
+    }
+
+    prepareEnums() {
+        for (const table of ENUM_TABLES) {
+            this.enums.set(table, new Map())
+        }
+    }
 
     async fetchLocations(): Promise<void> {
         const url = new URL("/api/incident", baseUrl());
@@ -119,5 +128,13 @@ export default class Store {
         }
         return out
     }
-    
+
 }
+
+const ENUM_TABLES: string[] = [
+    "race",
+    "county",
+    "agency",
+    "cause",
+    "useOfForce",
+]

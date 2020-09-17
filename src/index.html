@@ -19,10 +19,17 @@
 
 <body>
     <!-- <fe-gmap></fe-gmap> -->
-    <fe-select></fe-select>
+    <div>
+        <fe-select class="enum" name="agency" id="filter-agency"></fe-select>
+        <fe-select class="enum" name="cause" id="filter-cause"></fe-select>
+        <fe-select class="enum" name="county" id="filter-county"></fe-select>
+        <fe-select class="enum" name="race" id="filter-race"></fe-select>
+        <fe-select class="enum" name="use-of-force" id="filter-use-of-force"></fe-select>
+    </div>
 
     <template id="fe-select-template">
         <link rel="stylesheet" href="public/fe-select.css">
+        <label for="search">Example</label>
         <div id="container">
             <div id="dropdown">
                 <ul id="results"></ul>

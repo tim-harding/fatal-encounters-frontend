@@ -21,6 +21,27 @@ export default class Select extends HTMLElement {
     // List of the IDs
     private options: number[] = []
 
+    private _name: string = ""
+
+    query: { (): string } | null = null
+    storeValue: { (value: any): void } | null = null
+    nameForId: { (id: number): any } | null = null
+
+    get name(): string {
+        return this._name
+    }
+
+    set name(value: string) {
+        this._name = value
+        this.updateLabel()
+    }
+
+    static get observedAttributes() {
+        return [
+            "name",
+        ]
+    }
+
     constructor() {
         super()
         fromTemplate.bind(this)(Select.TAG)
@@ -29,6 +50,20 @@ export default class Select extends HTMLElement {
         this.searchTerms = this.shadowElement("search-terms") as HTMLUListElement
         this.results = this.shadowElement("results") as HTMLUListElement
         this.prepareRespondToInput()
+    }
+
+    private updateLabel(): void {
+        const label = this.shadowRoot?.querySelector("label") as HTMLLabelElement
+        label.innerText = this.name
+    }
+
+    private attributeChangedCallback(name: string, oldValue: string, newValue: string) {
+        switch (name) {
+            case "name": {
+                this.name = newValue
+                break
+            }
+        }
     }
 
     private shadowElement(id: string): HTMLElement {
@@ -75,7 +110,11 @@ export default class Select extends HTMLElement {
     }
 
     private createNewPill(id: number): void {
-        const name = this.store?.races.get(id)
+        if (!this.nameForId) {
+            return
+        }
+        const name = this.nameForId(id)
+        // const name = this.store?.races.get(id)
         if (name) {
             const pill = document.createElement("fe-select-pill")
             const span = document.createElement("span")
@@ -102,20 +141,23 @@ export default class Select extends HTMLElement {
         this.updateResults()
     }
 
-    private get term(): string {
+    get term(): string {
         return this.search.value
     }
 
     private async updateResults(): Promise<void> {
-        if (this.fetching) {
+        console.log("Update")
+        if (this.fetching || !this.query || !this.storeValue) {
+            console.log("Bailed")
             return
         }
         this.fetching = true
-        const response = await fetch(this.query)
+        const response = await fetch(this.query())
         const json = await response.json()
         this.clearResults()
         for (const row of json.rows) {
-            this.store?.races.set(row.id, row.name)
+            this.storeValue(row)
+            // this.store?.enums.get(this.name)?.set(row.id, row.name)
             this.options.push(row.id)
             const option = this.optionElement(row.name)
             this.results.appendChild(option)
@@ -155,15 +197,6 @@ export default class Select extends HTMLElement {
         button.innerText = text
         li.appendChild(button)
         return li
-    }
-
-    private get query(): string {
-        const url = new URL("/api/race", baseUrl())
-        const params = url.searchParams
-        params.append("search", this.term)
-        params.append("count", "6")
-        const href = url.href
-        return href
     }
 
 }

@@ -21,6 +21,7 @@ function prepareSelectElements() {
 
 function handlePositions() {
     const map = document.querySelector("fe-gmap") as GMap
+    map.store = store
     map.setMarkers(store.markers)
 }
 

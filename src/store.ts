@@ -84,11 +84,7 @@ export default class Store {
     readonly usesOfForce: Enums = new Map()
     readonly listeners: { (): void } [] = []
 
-    constructor() {
-        this.getAllLocations()
-    }
-
-    private async getAllLocations() {
+    async fetchLocations(): Promise<void> {
         const url = new URL("/api/incident", baseUrl());
         const params = url.searchParams;
         params.append("count", "-1");

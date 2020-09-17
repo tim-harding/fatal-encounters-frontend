@@ -6,7 +6,7 @@
     <meta name="description" content="Query tool for the Fatal Encounters database">
 
     <link rel="stylesheet" href="public/style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+    <!-- <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet"> -->
 
     <link rel="preload" href="public/fe-select.css" as="style">
     <link rel="preload" href="public/fe-select-pill.css" as="style">
@@ -18,12 +18,26 @@
 </head>
 
 <body>
-    <fe-gmap></fe-gmap>
+    <!-- <fe-gmap></fe-gmap> -->
     <fe-select></fe-select>
 
     <template id="fe-select-template">
         <link rel="stylesheet" href="public/fe-select.css">
         <div id="container">
+            <div id="dropdown">
+                <ul id="results">
+                    <li>
+                        <button>
+                            Test 1
+                        </button>
+                    </li>
+                    <li>
+                        <button>
+                            Test 2
+                        </button>
+                    </li>
+                </ul>
+            </div>
             <ul class="search-terms">
                 <li>
                     <fe-select-pill></fe-select-pill>
@@ -35,10 +49,6 @@
                     <input type="text" name="search" id="search" class="search">
                 </li>
             </ul>
-            <div id="dropdown">
-                <ul id="results">
-                </ul>
-            </div>
         </div>
     </template>
 

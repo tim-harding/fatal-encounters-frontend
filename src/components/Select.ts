@@ -58,18 +58,14 @@ export default class Select extends HTMLElement {
         const response = await fetch(this.query)
         const json = await response.json()
         this.clearResults()
-        console.log("Begin")
-        console.log(this.results.childElementCount)
         for (const row of json.rows) {
-            // TODO: Maybe only care about storing this in the component,
-            // not the data store.
             this.store?.races.set(row.id, row.name)
             const li = document.createElement("li")
-            li.innerText = row.name
+            const button = document.createElement("button")
+            button.innerText = row.name
+            li.appendChild(button)
             this.results.appendChild(li)
-            console.log(li)
         }
-        console.log("End")
         this.fetching = false
         if (this.dirty) {
             this.dirty = false

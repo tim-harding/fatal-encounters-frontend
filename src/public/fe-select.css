@@ -3,11 +3,8 @@
 #container {
     position: relative;
     display: inline-block;
-    background-color: #eee;
     border: none;
-    border-radius: 0.5rem;
     font-size: 1rem;
-    padding: 0.5rem;
 }
 
 fe-select-pill {
@@ -15,8 +12,11 @@ fe-select-pill {
 }
 
 .search-terms {
+    background-color: #eee;
+    padding: 0.5rem;
     display: flex;
     align-items: center;
+    border-radius: 0.5rem;
 }
 
 .search {
@@ -27,8 +27,29 @@ fe-select-pill {
 }
 
 #dropdown {
-    position: absolute;
     display: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-color: #ddd;
+    width: 100%;
+    padding-top: 3rem;
+    border-radius: 0.5rem;
+    overflow: hidden;
+}
+
+#results li {
+    width: 100%;
+}
+
+#results button {
+    width: 100%;
+    padding: 1rem;
+    text-align: left;
+}
+
+#results button:hover {
+    background-color: #bbb;
 }
 
 .show {

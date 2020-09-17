@@ -1,4 +1,5 @@
 import MarkerClusterer from "@google/markerclustererplus"
+import Store from "../store"
 import fromTemplate from "./fromTemplate"
 
 declare global {
@@ -10,6 +11,8 @@ export default class GMap extends HTMLElement {
     private map: google.maps.Map | null = null
     private clusters: MarkerClusterer | null = null
     private markers: google.maps.Marker[] = []
+
+    store: Store | null = null
 
     static readonly TAG = "fe-gmap"
 
@@ -60,6 +63,7 @@ export default class GMap extends HTMLElement {
             imagePath: "https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m",
         });
         this.update()
+        this.store?.fetchLocations()
     }
 
 }

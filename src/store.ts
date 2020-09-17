@@ -1,4 +1,4 @@
-import { baseUrl } from "./baseUrl"
+import { baseUrl } from "./misc"
 
 interface Incident {
     name: string | null,

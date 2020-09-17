@@ -25,26 +25,9 @@
         <link rel="stylesheet" href="public/fe-select.css">
         <div id="container">
             <div id="dropdown">
-                <ul id="results">
-                    <li>
-                        <button>
-                            Test 1
-                        </button>
-                    </li>
-                    <li>
-                        <button>
-                            Test 2
-                        </button>
-                    </li>
-                </ul>
+                <ul id="results"></ul>
             </div>
-            <ul class="search-terms">
-                <li>
-                    <fe-select-pill></fe-select-pill>
-                </li>
-                <li>
-                    <fe-select-pill></fe-select-pill>
-                </li>
+            <ul id="search-terms">
                 <li>
                     <input type="text" name="search" id="search" class="search">
                 </li>
@@ -55,7 +38,7 @@
     <template id="fe-select-pill-template">
         <link rel="stylesheet" href="public/fe-select-pill.css">
         <span class="pill">
-            <slot>
+            <slot name="content">
                 <span>Example</span>
             </slot>
             <span class="remove-button">X</span>

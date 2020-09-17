@@ -11,7 +11,7 @@ fe-select-pill {
     margin-right: 0.5rem;
 }
 
-.search-terms {
+#search-terms {
     background-color: #eee;
     padding: 0.5rem;
     display: flex;
@@ -49,6 +49,10 @@ fe-select-pill {
 }
 
 #results button:hover {
+    background-color: #bbb;
+}
+
+.selected {
     background-color: #bbb;
 }
 

@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -13,7 +14,7 @@
     <link rel="preload" href="public/fe-select-option.css" as="style">
     <link rel="preload" href="public/fe-spinner.css" as="style">
     <link rel="preload" href="public/fe-gmap.css" as="style">
-    
+
     <title>Fatal Encounters</title>
 </head>
 
@@ -29,16 +30,18 @@
 
     <template id="fe-select-template">
         <link rel="stylesheet" href="public/fe-select.css">
-        <label for="search">Example</label>
         <div id="container">
-            <div id="dropdown">
-                <ul id="results"></ul>
+            <label for="search">Example</label>
+            <div id="search-field">
+                <div id="dropdown">
+                    <ul id="results"></ul>
+                </div>
+                <ul id="search-terms">
+                    <li>
+                        <input type="text" name="search" id="search" class="search">
+                    </li>
+                </ul>
             </div>
-            <ul id="search-terms">
-                <li>
-                    <input type="text" name="search" id="search" class="search">
-                </li>
-            </ul>
         </div>
     </template>
 
@@ -72,4 +75,5 @@
         <div id="map-target"></div>
     </template>
 </body>
+
 </html>

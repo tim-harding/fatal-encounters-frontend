@@ -54,7 +54,7 @@ export default class Select extends HTMLElement {
 
     private updateLabel(): void {
         const label = this.shadowRoot?.querySelector("label") as HTMLLabelElement
-        label.innerText = this.name
+        label.innerText = this.prettyName()
     }
 
     private attributeChangedCallback(name: string, oldValue: string, newValue: string) {
@@ -64,6 +64,16 @@ export default class Select extends HTMLElement {
                 break
             }
         }
+    }
+
+    private prettyName(): string {
+        const nameParts = this.name.split("-")
+        const firstPart = nameParts[0]
+        const firstLetter = firstPart[0].toUpperCase()
+        const rest = firstPart.slice(1)
+        nameParts[0] = `${firstLetter}${rest}`
+        const name = nameParts.join(" ")
+        return name
     }
 
     private shadowElement(id: string): HTMLElement {
@@ -114,7 +124,6 @@ export default class Select extends HTMLElement {
             return
         }
         const name = this.nameForId(id)
-        // const name = this.store?.races.get(id)
         if (name) {
             const pill = document.createElement("fe-select-pill")
             const span = document.createElement("span")
@@ -157,7 +166,6 @@ export default class Select extends HTMLElement {
         this.clearResults()
         for (const row of json.rows) {
             this.storeValue(row)
-            // this.store?.enums.get(this.name)?.set(row.id, row.name)
             this.options.push(row.id)
             const option = this.optionElement(row.name)
             this.results.appendChild(option)

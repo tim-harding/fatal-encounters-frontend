@@ -30,9 +30,9 @@ function handlePositions() {
 function prepareSelectEnumQueries() {
     const enums = document.querySelectorAll(".enum") as NodeListOf<Select>
     for (const e of enums) {
-        console.log(`Query for ${e}`)
         e.query = queryForSelectEnumFactory(e)
         e.storeValue = storeValueForSelectEnumFactory(e)
+        e.nameForId = nameForIdFactory(e)
     }
 }
 
@@ -45,13 +45,33 @@ function defineComponents() {
 
 function queryForSelectEnumFactory(s: Select): { (): string } {
     return function query(): string {
-        const url = new URL(`/api/${s.name}`, baseUrl())
+        const name = selectQueryName(s)
+        const url = new URL(`/api/${name}`, baseUrl())
         const params = url.searchParams
         params.append("search", s.term)
         params.append("count", "6")
         // Todo: filter by exisiting IDs
         const href = url.href
         return href
+    }
+}
+
+function selectQueryName(s: Select): string {
+    const nameParts = s.name.split("-")
+    for (let i = 1; i < nameParts.length; i++) {
+        const part = nameParts[i]
+        const firstLetter = part[0].toUpperCase()
+        const rest = part.slice(1)
+        nameParts[i] = `${firstLetter}${rest}`
+    }
+    const name = nameParts.join("")
+    return name
+}
+
+function nameForIdFactory(s: Select): { (id: number): string } {
+    return function nameForId(id: number): string {
+        const name = store.enums.get(s.name)?.get(id)
+        return name || ""
     }
 }
 

@@ -1,3 +1,5 @@
+import { baseUrl } from "./baseUrl"
+
 interface Incident {
     name: string | null,
     age: number | null,
@@ -27,6 +29,8 @@ interface City {
     state: number,
 }
 
+type Place = State[] | City[]
+
 enum Gender {
     either,
     male,
@@ -45,8 +49,11 @@ interface Filter {
     agency: number[],
     cause: number[],
     useOfForce: number[],
-    city: number[],
+    place: Place,
 }
+
+type Rows<T> = Map<number, T>
+type Enums = Rows<string>
 
 export default class Store {
 
@@ -62,24 +69,27 @@ export default class Store {
         agency: [],
         cause: [],
         useOfForce: [],
-        city: [],
+        place: [],
     }
 
-    private mask: number[] | null = null
-    private incidents: Map<number, Incident> = new Map()
-    private positions: Map<number, google.maps.Marker> = new Map()
-    private cities: Map<number, City> = new Map()
-    private states: Map<number, State> = new Map()
-    listeners: { (): void } [] = []
+    readonly mask: number[] | null = null
+    readonly incidents: Rows<Incident> = new Map()
+    readonly positions: Rows<google.maps.Marker> = new Map()
+    readonly cities: Rows<City> = new Map()
+    readonly states: Rows<State> = new Map()
+    readonly races: Enums = new Map()
+    readonly counties: Enums = new Map()
+    readonly agencies: Enums = new Map()
+    readonly causes: Enums = new Map()
+    readonly usesOfForce: Enums = new Map()
+    readonly listeners: { (): void } [] = []
 
     constructor() {
         this.getAllLocations()
     }
 
     private async getAllLocations() {
-        const loc = window.location
-        const base = `${loc.protocol}//${loc.host}`;
-        const url = new URL("/api/incident", base);
+        const url = new URL("/api/incident", baseUrl());
         const params = url.searchParams;
         params.append("count", "-1");
         params.append("rowKind", "position");

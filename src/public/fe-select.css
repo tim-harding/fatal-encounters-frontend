@@ -1,1 +1,36 @@
 @import "general.css";
+
+#container {
+    position: relative;
+    display: inline-block;
+    background-color: #eee;
+    border: none;
+    border-radius: 0.5rem;
+    font-size: 1rem;
+    padding: 0.5rem;
+}
+
+fe-select-pill {
+    margin-right: 0.5rem;
+}
+
+.search-terms {
+    display: flex;
+    align-items: center;
+}
+
+.search {
+    background: none;
+    border: none;
+    font-size: 1rem;
+    font: inherit;
+}
+
+#dropdown {
+    position: absolute;
+    display: none;
+}
+
+.show {
+    display: inherit !important;
+}

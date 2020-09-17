@@ -19,12 +19,27 @@
 
 <body>
     <fe-gmap></fe-gmap>
-    <fe-select-pill></fe-select-pill>
+    <fe-select></fe-select>
 
     <template id="fe-select-template">
         <link rel="stylesheet" href="public/fe-select.css">
-        <input type="text" name="search" id="search">
-        <div id="options" class="search-dropdown"></div>
+        <div id="container">
+            <ul class="search-terms">
+                <li>
+                    <fe-select-pill></fe-select-pill>
+                </li>
+                <li>
+                    <fe-select-pill></fe-select-pill>
+                </li>
+                <li>
+                    <input type="text" name="search" id="search" class="search">
+                </li>
+            </ul>
+            <div id="dropdown">
+                <ul id="results">
+                </ul>
+            </div>
+        </div>
     </template>
 
     <template id="fe-select-pill-template">
@@ -33,6 +48,7 @@
             <slot>
                 <span>Example</span>
             </slot>
+            <span class="remove-button">X</span>
         </span>
     </template>
 

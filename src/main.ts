@@ -9,6 +9,14 @@ let store: Store = new Store()
 function main() {
     store.listeners.push(handlePositions)
     defineComponents()
+    prepareSelectElements()
+}
+
+function prepareSelectElements() {
+    const elements = document.querySelectorAll("fe-select") as NodeListOf<Select>
+    for (const element of elements) {
+        element.store = store
+    }
 }
 
 function handlePositions() {

@@ -9,7 +9,8 @@ export default class Select extends HTMLElement {
     private dropdown: HTMLDivElement
     private search: HTMLInputElement
     private searchTerms: HTMLUListElement
-    private results: HTMLUListElement
+    private options: HTMLUListElement
+    private container: HTMLDivElement
 
     store: Store | null = null
 
@@ -19,12 +20,14 @@ export default class Select extends HTMLElement {
     private selection: number = 0
 
     // List of the IDs
-    private options: number[] = []
+    private optionIds: number[] = []
+    private pillIds: number[] = []
 
     private _name: string = ""
 
     query: { (): string } | null = null
     storeValue: { (value: any): void } | null = null
+    removeValue: { (id: number): void } | null = null
     nameForId: { (id: number): any } | null = null
 
     get name(): string {
@@ -48,7 +51,8 @@ export default class Select extends HTMLElement {
         this.dropdown = this.shadowElement("dropdown") as HTMLDivElement
         this.search = this.shadowElement("search") as HTMLInputElement
         this.searchTerms = this.shadowElement("search-terms") as HTMLUListElement
-        this.results = this.shadowElement("results") as HTMLUListElement
+        this.options = this.shadowElement("options") as HTMLUListElement
+        this.container = this.shadowElement("container") as HTMLDivElement
         this.prepareRespondToInput()
     }
 
@@ -110,12 +114,14 @@ export default class Select extends HTMLElement {
     }
 
     private commit(): void {
-        const options = this.options
-        if (options.length > 0) {
-            const option = options[this.selection]
-            this.store?.filter.race.push(option)
-            this.createNewPill(option)
+        const optionIds = this.optionIds
+        if (optionIds.length > 0) {
+            const id = optionIds[this.selection]
+            this.pillIds.push(id)
+            this.store?.filter.race.push(id)
+            this.createNewPill(id)
             this.search.value = ""
+            this.updateResults()
         }
     }
 
@@ -131,6 +137,7 @@ export default class Select extends HTMLElement {
             span.innerText = name
             span.slot = "content"
             pill.appendChild(span)
+            pill.addEventListener("remove", this.handleRemovePillFactory(id))
             li.appendChild(pill)
             const searchTerms = this.searchTerms
             const children = searchTerms.children
@@ -138,12 +145,33 @@ export default class Select extends HTMLElement {
         }
     }
 
+    private handleRemovePillFactory(id: number): { (): void } {
+        return () => {
+            if (this.removeValue) {
+                this.removeValue(id)
+            }
+            const pillIds = this.pillIds
+            let i = 0;
+            for (; i < pillIds.length; i++) {
+                if (pillIds[i] == id) {
+                    break
+                }
+            }
+            pillIds.splice(i, 1)[0]
+            const searchTerms = this.searchTerms
+            const pill = searchTerms.children[i]
+            searchTerms.removeChild(pill)
+        }
+    }
+
     private handleSearchFocus(): void {
         this.dropdown.classList.add("show")
+        this.container.classList.add("forefront")
     }
 
     private handleSearchBlur(): void {
         this.dropdown.classList.remove("show")
+        this.container.classList.remove("forefront")
     }
 
     private handleSearchInput(): void {
@@ -166,9 +194,9 @@ export default class Select extends HTMLElement {
         this.clearResults()
         for (const row of json.rows) {
             this.storeValue(row)
-            this.options.push(row.id)
+            this.optionIds.push(row.id)
             const option = this.optionElement(row.name)
-            this.results.appendChild(option)
+            this.options.appendChild(option)
         }
         this.offsetSelection(0)
         this.fetching = false
@@ -179,12 +207,12 @@ export default class Select extends HTMLElement {
     }
 
     private offsetSelection(amount: number): void {
-        const optionCount = this.options.length
+        const optionCount = this.optionIds.length
         if (optionCount > 0) {
-            this.selection = mod(this.selection + amount, this.options.length)
+            this.selection = mod(this.selection + amount, this.optionIds.length)
         }
         const SELECTED = "selected"
-        const children = this.results.children
+        const children = this.options.children
         for (const child of children) {
             child.classList.remove(SELECTED)
         }
@@ -192,8 +220,8 @@ export default class Select extends HTMLElement {
     }
 
     private clearResults(): void {
-        this.options = []
-        const results = this.results
+        this.optionIds = []
+        const results = this.options
         while (results.lastChild) {
             results.removeChild(results.lastChild)
         }

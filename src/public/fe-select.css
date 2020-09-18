@@ -3,6 +3,7 @@
 #container {
     grid-template-columns: 5rem auto;
     align-items: center;
+    width: 100%;
 }
 
 #search-field {
@@ -17,14 +18,20 @@ fe-select-pill {
 }
 
 #search-terms {
+    display: flex;
     background-color: #eee;
     padding: 0.5rem;
-    display: flex;
     align-items: center;
     border-radius: 0.5rem;
 }
 
-.search {
+.search-container {
+    display: block;
+    width: 100%;
+}
+
+#search {
+    width: 100%;
     background: none;
     border: none;
     font-size: 1rem;
@@ -63,4 +70,8 @@ fe-select-pill {
 
 .show {
     display: inherit !important;
+}
+
+.forefront {
+    z-index: 1;
 }

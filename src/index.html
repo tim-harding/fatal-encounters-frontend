@@ -34,11 +34,25 @@
             <label for="search">Example</label>
             <div id="search-field">
                 <div id="dropdown">
-                    <ul id="results"></ul>
+                    <ul id="options">
+                        <!-- <li>
+                            <button>
+                                This is a long example of a search result
+                            </button>
+                        </li>
+                        <li>
+                            <button>
+                                Here is another long search result
+                            </button>
+                        </li> -->
+                    </ul>
                 </div>
                 <ul id="search-terms">
-                    <li>
-                        <input type="text" name="search" id="search" class="search">
+                    <!-- <fe-select-pill>
+                        <span slot="content">This is an example</span>
+                    </fe-search-pill> -->
+                    <li class="search-container">
+                        <input type="text" name="search" id="search">
                     </li>
                 </ul>
             </div>
@@ -51,7 +65,12 @@
             <slot name="content">
                 <span>Example</span>
             </slot>
-            <span class="remove-button">X</span>
+            <button id="remove-button">
+                <svg role="img" width="24px" height="24px" viewBox="0 0 24 24" stroke="black" stroke-width="2" fill="none">
+                    <title>Remove</title>
+                    <path d="M6.34314575 6.34314575L17.6568542 17.6568542M6.34314575 17.6568542L17.6568542 6.34314575" />
+                </svg>
+            </button>
         </span>
     </template>
 

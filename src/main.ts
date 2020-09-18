@@ -10,15 +10,7 @@ let store: Store = new Store()
 function main() {
     store.listeners.push(handlePositions)
     defineComponents()
-    prepareSelectElements()
     prepareSelectEnumQueries()
-}
-
-function prepareSelectElements() {
-    const elements = document.querySelectorAll("fe-select") as NodeListOf<Select>
-    for (const element of elements) {
-        element.store = store
-    }
 }
 
 function handlePositions() {
@@ -33,6 +25,13 @@ function prepareSelectEnumQueries() {
         e.query = queryForSelectEnumFactory(e)
         e.storeValue = storeValueForSelectEnumFactory(e)
         e.nameForId = nameForIdFactory(e)
+        e.removeValue = removeValueFactory(e)
+    }
+}
+
+function removeValueFactory(s: Select): { (id: number): void } {
+    return function(id: number): void {
+        store.enums.get(s.name)?.delete(id)
     }
 }
 

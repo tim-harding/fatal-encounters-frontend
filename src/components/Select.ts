@@ -1,5 +1,4 @@
-import { baseUrl, mod } from "../misc"
-import Store from "../store"
+import { mod } from "../misc"
 import fromTemplate from "./fromTemplate"
 
 export default class Select extends HTMLElement {
@@ -12,14 +11,11 @@ export default class Select extends HTMLElement {
     private options: HTMLUListElement
     private container: HTMLDivElement
 
-    store: Store | null = null
-
     private dirty: boolean = false
     private fetching: boolean = false
 
     private selection: number = 0
 
-    // List of the IDs
     private optionIds: number[] = []
     private pillIds: number[] = []
 

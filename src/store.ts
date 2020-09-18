@@ -44,12 +44,8 @@ interface Filter {
     dateMin: Date | null,
     dateMax: Date | null,
     gender: Gender,
-    race: number[],
-    county: number[],
-    agency: number[],
-    cause: number[],
-    useOfForce: number[],
     place: Place,
+    enums: Map<string, number[]>,
 }
 
 type Rows<T> = Map<number, T>
@@ -64,12 +60,8 @@ export default class Store {
         dateMin: null,
         dateMax: null,
         gender: Gender.either,
-        race: [],
-        county: [],
-        agency: [],
-        cause: [],
-        useOfForce: [],
         place: [],
+        enums: new Map(),
     }
 
     readonly mask: number[] | null = null
@@ -90,6 +82,7 @@ export default class Store {
     prepareEnums() {
         for (const table of ENUM_TABLES) {
             this.enums.set(table, new Map())
+            this.filter.enums.set(table, [])
         }
     }
 

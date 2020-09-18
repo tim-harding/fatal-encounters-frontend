@@ -25,13 +25,24 @@ function prepareSelectEnumQueries() {
         e.query = queryForSelectEnumFactory(e)
         e.storeValue = storeValueForSelectEnumFactory(e)
         e.nameForId = nameForIdFactory(e)
-        e.removeValue = removeValueFactory(e)
+        e.removeFromFilter = removeFromFilterFactory(e)
+        e.addToFilter = addToFilterFactory(e)
     }
 }
 
-function removeValueFactory(s: Select): { (id: number): void } {
+function addToFilterFactory(s: Select): { (id: number): void } {
     return function(id: number): void {
-        store.enums.get(s.name)?.delete(id)
+        store.filter.enums.get(s.name)?.push(id)
+    }
+}
+
+function removeFromFilterFactory(s: Select): { (id: number): void } {
+    return function(id: number): void {
+        const filterEnum = store.filter.enums.get(s.name)
+        const index = filterEnum?.indexOf(id)
+        if (index) {
+            filterEnum?.splice(index, 1)
+        }
     }
 }
 
@@ -49,15 +60,11 @@ function queryForSelectEnumFactory(s: Select): { (): string } {
         const params = url.searchParams
         params.append("search", s.term)
         params.append("count", "6")
-        const ids: number[] = []
-        const keys = store.enums.get(s.name)?.keys()
-        if (keys) {
-            for (const id of keys) {
-                ids.push(id)
-            }
+        const ids = store.filter.enums.get(s.name)
+        const idsString = ids?.join(",")
+        if (idsString) {
+            params.append("ignore", idsString)
         }
-        const idsString = ids.join(",")
-        params.append("ignore", idsString)
         const href = url.href
         return href
     }

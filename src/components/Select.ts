@@ -23,7 +23,8 @@ export default class Select extends HTMLElement {
 
     query: { (): string } | null = null
     storeValue: { (value: any): void } | null = null
-    removeValue: { (id: number): void } | null = null
+    addToFilter: { (id: number): void } | null = null
+    removeFromFilter: { (id: number): void } | null = null
     nameForId: { (id: number): any } | null = null
 
     get name(): string {
@@ -114,7 +115,9 @@ export default class Select extends HTMLElement {
         if (optionIds.length > 0) {
             const id = optionIds[this.selection]
             this.pillIds.push(id)
-            this.store?.filter.race.push(id)
+            if (this.addToFilter) {
+                this.addToFilter(id)
+            }
             this.createNewPill(id)
             this.search.value = ""
             this.updateResults()
@@ -143,8 +146,8 @@ export default class Select extends HTMLElement {
 
     private handleRemovePillFactory(id: number): { (): void } {
         return () => {
-            if (this.removeValue) {
-                this.removeValue(id)
+            if (this.removeFromFilter) {
+                this.removeFromFilter(id)
             }
             const pillIds = this.pillIds
             let i = 0;
@@ -212,7 +215,10 @@ export default class Select extends HTMLElement {
         for (const child of children) {
             child.classList.remove(SELECTED)
         }
-        children[this.selection].classList.add(SELECTED)
+        const selection = children[this.selection]
+        if (selection) {
+            selection.classList.add(SELECTED)
+        }
     }
 
     private clearResults(): void {

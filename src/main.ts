@@ -49,7 +49,15 @@ function queryForSelectEnumFactory(s: Select): { (): string } {
         const params = url.searchParams
         params.append("search", s.term)
         params.append("count", "6")
-        // Todo: filter by exisiting IDs
+        const ids: number[] = []
+        const keys = store.enums.get(s.name)?.keys()
+        if (keys) {
+            for (const id of keys) {
+                ids.push(id)
+            }
+        }
+        const idsString = ids.join(",")
+        params.append("ignore", idsString)
         const href = url.href
         return href
     }

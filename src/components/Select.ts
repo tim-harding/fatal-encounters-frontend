@@ -49,7 +49,7 @@ export default class Select extends HTMLElement {
         this.search = this.shadowElement("search") as HTMLInputElement
         this.searchTerms = this.shadowElement("search-terms") as HTMLUListElement
         this.options = this.shadowElement("options") as HTMLUListElement
-        this.container = this.shadowElement("container") as HTMLDivElement
+        this.container = this.shadowElement("root-container") as HTMLDivElement
         this.prepareRespondToInput()
     }
 

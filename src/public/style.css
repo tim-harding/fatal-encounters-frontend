@@ -7,3 +7,11 @@ fe-gmap {
 fe-select {
     margin: 2rem;
 }
+
+body {
+    width: 100%;
+}
+
+.filters {
+    width: 100%;
+}

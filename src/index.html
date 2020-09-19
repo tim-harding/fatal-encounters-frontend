@@ -20,7 +20,7 @@
 
 <body>
     <!-- <fe-gmap></fe-gmap> -->
-    <div>
+    <div class="filters">
         <fe-select class="enum" name="agency" id="filter-agency"></fe-select>
         <fe-select class="enum" name="cause" id="filter-cause"></fe-select>
         <fe-select class="enum" name="county" id="filter-county"></fe-select>
@@ -30,9 +30,9 @@
 
     <template id="fe-select-template">
         <link rel="stylesheet" href="public/fe-select.css">
-        <div id="container">
+        <div id="root-container">
             <label for="search">Example</label>
-            <div id="search-field">
+            <div id="search-container">
                 <div id="dropdown">
                     <ul id="options">
                         <!-- <li>
@@ -51,7 +51,7 @@
                     <!-- <fe-select-pill>
                         <span slot="content">This is an example</span>
                     </fe-search-pill> -->
-                    <li class="search-container">
+                    <li class="input-container">
                         <input type="text" name="search" id="search">
                     </li>
                 </ul>

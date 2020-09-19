@@ -63,7 +63,7 @@ export default class GMap extends HTMLElement {
             imagePath: "https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m",
         });
         this.update()
-        this.store?.fetchLocations()
+        this.store?.fetchPositions()
     }
 
 }

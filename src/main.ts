@@ -34,17 +34,13 @@ function prepareSelectEnumQueries() {
 
 function addToFilterFactory(s: Select): { (id: number): void } {
     return function(id: number): void {
-        store.filter.enums.get(s.name)?.push(id)
+        store.filter.enums.add(s.name, id)
     }
 }
 
 function removeFromFilterFactory(s: Select): { (id: number): void } {
     return function(id: number): void {
-        const filterEnum = store.filter.enums.get(s.name)
-        const index = filterEnum?.indexOf(id)
-        if (index) {
-            filterEnum?.splice(index, 1)
-        }
+        store.filter.enums.remove(s.name, id)
     }
 }
 
@@ -85,14 +81,14 @@ function selectQueryName(s: Select): string {
 
 function nameForIdFactory(s: Select): { (id: number): string } {
     return function nameForId(id: number): string {
-        const name = store.enums.get(s.name)?.get(id)
+        const name = store.data.enums.get(s.name)?.get(id)
         return name || ""
     }
 }
 
 function storeValueForSelectEnumFactory(s: Select): { (row: any): void } {
     return function storeValue(row: any): void {
-        store.enums.get(s.name)?.set(row.id, row.name)
+        store.data.enums.get(s.name)?.set(row.id, row.name)
     }
 }
 

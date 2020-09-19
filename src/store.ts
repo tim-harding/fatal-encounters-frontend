@@ -29,65 +29,182 @@ interface City {
     state: number,
 }
 
-type Place = State[] | City[]
-
 enum Gender {
     either,
     male,
     female,
 }
 
-interface Filter {
-    name: string,
-    ageMax: number | null,
-    ageMin: number | null,
-    dateMin: Date | null,
-    dateMax: Date | null,
-    gender: Gender,
-    place: Place,
-    enums: Map<string, number[]>,
+class PubSub {
+
+    readonly listeners: { (): void }[] = []
+
+    protected publish(): void {
+        for (const listener of this.listeners) {
+            listener()
+        }
+    }
+    
+}
+
+class Bound<T> extends PubSub {
+
+    private _min: T | null = null
+
+    get min(): T | null {
+        return this._min
+    }
+    
+    set min(value: T | null) {
+        this._min = value
+        this.publish()
+    }
+
+    private _max: T | null = null
+
+    get max(): T | null {
+        return this._max
+    }
+    
+    set max(value: T | null) {
+        this._max = value
+        this.publish()
+    }
+
+}
+
+class Filter extends PubSub {
+
+    private _name: string = ""
+
+    get name() {
+        return this._name;
+    }
+
+    set name(value: string) {
+        this._name = value
+        this.publish()
+    }
+
+    private _gender: Gender = Gender.either
+
+    get gender(): Gender {
+        return this._gender
+    }
+
+    set gender(value: Gender) {
+        this._gender = value
+        this.publish()
+    }
+
+    readonly age: Bound<number> = new Bound()
+    readonly date: Bound<Date> = new Bound()
+    readonly place: FilterPlace = new FilterPlace()
+    readonly enums: FilterEnums = new FilterEnums()
+
+    constructor() {
+        super()
+        const handler = this.publish.bind(this)
+        this.age.listeners.push(handler)
+        this.date.listeners.push(handler)
+        this.place.listeners.push(handler)
+        this.enums.listeners.push(handler)
+    }
+
+}
+
+class FilterEnums extends PubSub {
+
+    private enums: Map<string, number[]> = new Map()
+
+    constructor() {
+        super()
+        for (const table of ENUM_TABLES) {
+            this.enums.set(table, [])
+        }
+    }
+
+    add(e: string, id: number): void {
+        this.enums.get(e)?.push(id)
+        this.publish()
+    }
+
+    remove(e: string, id: number): void {
+        const table = this.enums.get(e)
+        const i = table?.indexOf(id)
+        if (i) {
+            table?.splice(i, 1)
+        }
+        this.publish()
+    }
+
+    get(e: string): number[] | undefined {
+        return this.enums.get(e)
+    }
+
+}
+
+class FilterPlace extends PubSub {
+
+    private cities: number[] = []
+    private states: number[] = []
+    private isCity: boolean = false
+
+    private get target(): number[] {
+        return this.isCity ? this.cities : this.states
+    }
+
+    add(id: number): void {
+        this.target.push(id)
+        this.publish()
+    }
+
+    remove(id: number): void {
+        const target = this.target
+        const i = target?.indexOf(id)
+        if (i) {
+            target?.splice(i, 1)
+        }
+        this.publish()
+    }
+
 }
 
 type Rows<T> = Map<number, T>
 type Enums = Rows<string>
 
-export default class Store {
+class Data {
 
-    filter: Filter = {
-        name: "",
-        ageMax: null,
-        ageMin: null,
-        dateMin: null,
-        dateMax: null,
-        gender: Gender.either,
-        place: [],
-        enums: new Map(),
-    }
-
-    readonly mask: number[] | null = null
     readonly incidents: Rows<Incident> = new Map()
     readonly positions: Rows<google.maps.Marker> = new Map()
-
     readonly cities: Rows<City> = new Map()
     readonly states: Rows<State> = new Map()
-
     readonly enums: Map<string, Enums> = new Map()
-
-    readonly listeners: { (): void }[] = []
 
     constructor() {
         this.prepareEnums()
-        this.fetchLocations()
     }
 
     prepareEnums() {
         for (const table of ENUM_TABLES) {
             this.enums.set(table, new Map())
-            this.filter.enums.set(table, [])
         }
     }
 
-    async fetchLocations(): Promise<void> {
+}
+
+export default class Store extends PubSub {
+
+    private mask: number[] | null = null
+    readonly filter: Filter = new Filter()
+    readonly data: Data = new Data()
+
+    constructor() {
+        super()
+        this.fetchPositions()
+    }
+
+    async fetchPositions(): Promise<void> {
         const url = new URL("/api/incident/position", baseUrl());
         const resolved = await fetch(url.href);
         const json = await resolved.json();
@@ -96,24 +213,23 @@ export default class Store {
             const marker = new google.maps.Marker({
                 position: new google.maps.LatLng(lat, lng),
             })
-            this.positions.set(row.id, marker)
+            this.data.positions.set(row.id, marker)
         }
-        for (const listener of this.listeners) {
-            listener()
-        }
+        this.publish()
     }
 
     get markers(): google.maps.Marker[] {
         const out: google.maps.Marker[] = []
+        const positions = this.data.positions
         if (this.mask) {
             for (const id of this.mask) {
-                const position = this.positions.get(id)
+                const position = positions.get(id)
                 if (position) {
                     out.push(position)
                 }
             }
         } else {
-            for (const marker of this.positions.values()) {
+            for (const marker of positions.values()) {
                 out.push(marker)
             }
         }

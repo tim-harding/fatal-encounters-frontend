@@ -1,6 +1,5 @@
 import SelectPill from "./components/SelectPill"
 import Select from "./components/Select"
-import Spinner from "./components/Spinner"
 import GMap from "./components/GMap"
 import Store from "./store"
 import { baseUrl } from "./misc"
@@ -22,11 +21,14 @@ function handlePositions() {
 function prepareSelectEnumQueries() {
     const enums = document.querySelectorAll(".enum") as NodeListOf<Select>
     for (const e of enums) {
-        e.query = queryForSelectEnumFactory(e)
-        e.storeValue = storeValueForSelectEnumFactory(e)
-        e.nameForId = nameForIdFactory(e)
-        e.removeFromFilter = removeFromFilterFactory(e)
-        e.addToFilter = addToFilterFactory(e)
+        const delegate = {
+            query : queryForSelectEnumFactory(e),
+            storeValue : storeValueForSelectEnumFactory(e),
+            nameForId : nameForIdFactory(e),
+            removeFromFilter : removeFromFilterFactory(e),
+            addToFilter : addToFilterFactory(e),
+        }
+        e.delegate = delegate
     }
 }
 
@@ -47,7 +49,6 @@ function removeFromFilterFactory(s: Select): { (id: number): void } {
 }
 
 function defineComponents() {
-    customElements.define(Spinner.TAG, Spinner)
     customElements.define(Select.TAG, Select)
     customElements.define(SelectPill.TAG, SelectPill)
     customElements.define(GMap.TAG, GMap)

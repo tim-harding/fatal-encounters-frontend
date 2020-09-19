@@ -11,7 +11,6 @@
 
     <link rel="preload" href="public/fe-select.css" as="style">
     <link rel="preload" href="public/fe-select-pill.css" as="style">
-    <link rel="preload" href="public/fe-select-option.css" as="style">
     <link rel="preload" href="public/fe-spinner.css" as="style">
     <link rel="preload" href="public/fe-gmap.css" as="style">
 
@@ -72,21 +71,6 @@
                 </svg>
             </button>
         </span>
-    </template>
-
-    <template id="fe-select-option-template">
-        <link rel="stylesheet" href="public/fe-select-option.css">
-        <div class="select-option">
-            <slot name="content">
-                <span>Example</span>
-            </slot>
-        </div>
-    </template>
-
-    <template id="fe-spinner-template">
-        <link rel="stylesheet" href="public/fe-spinner.css">
-        <!-- Todo: Replace with an actual spinner -->
-        <span>Searching...</span>
     </template>
 
     <template id="fe-gmap-template">

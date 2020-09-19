@@ -1,6 +1,14 @@
 import { mod } from "../misc"
 import fromTemplate from "./fromTemplate"
 
+interface SelectDelegate {
+    query: { (): string } 
+    storeValue: { (value: any): void } 
+    addToFilter: { (id: number): void } 
+    removeFromFilter: { (id: number): void } 
+    nameForId: { (id: number): any } 
+}
+
 export default class Select extends HTMLElement {
 
     static readonly TAG = "fe-select"
@@ -21,11 +29,7 @@ export default class Select extends HTMLElement {
 
     private _name: string = ""
 
-    query: { (): string } | null = null
-    storeValue: { (value: any): void } | null = null
-    addToFilter: { (id: number): void } | null = null
-    removeFromFilter: { (id: number): void } | null = null
-    nameForId: { (id: number): any } | null = null
+    delegate: SelectDelegate | null = null
 
     get name(): string {
         return this._name
@@ -115,9 +119,7 @@ export default class Select extends HTMLElement {
         if (optionIds.length > 0) {
             const id = optionIds[this.selection]
             this.pillIds.push(id)
-            if (this.addToFilter) {
-                this.addToFilter(id)
-            }
+            this.delegate?.addToFilter(id)
             this.createNewPill(id)
             this.search.value = ""
             this.updateResults()
@@ -125,10 +127,7 @@ export default class Select extends HTMLElement {
     }
 
     private createNewPill(id: number): void {
-        if (!this.nameForId) {
-            return
-        }
-        const name = this.nameForId(id)
+        const name = this.delegate?.nameForId(id)
         if (name) {
             const pill = document.createElement("fe-select-pill")
             const span = document.createElement("span")
@@ -146,9 +145,7 @@ export default class Select extends HTMLElement {
 
     private handleRemovePillFactory(id: number): { (): void } {
         return () => {
-            if (this.removeFromFilter) {
-                this.removeFromFilter(id)
-            }
+            this.delegate?.removeFromFilter(id)
             const pillIds = this.pillIds
             let i = 0;
             for (; i < pillIds.length; i++) {
@@ -182,19 +179,17 @@ export default class Select extends HTMLElement {
     }
 
     private async updateResults(): Promise<void> {
-        console.log("Update")
-        if (this.fetching || !this.query || !this.storeValue) {
-            console.log("Bailed")
+        if (this.fetching || !this.delegate) {
             return
         }
         this.fetching = true
-        const response = await fetch(this.query())
+        const response = await fetch(this.delegate.query())
         const json = await response.json()
         this.clearResults()
         for (const row of json.rows) {
-            this.storeValue(row)
+            this.delegate.storeValue(row)
             this.optionIds.push(row.id)
-            const option = this.optionElement(row.name)
+            const option = optionElement(row.name)
             this.options.appendChild(option)
         }
         this.offsetSelection(0)
@@ -216,9 +211,7 @@ export default class Select extends HTMLElement {
             child.classList.remove(SELECTED)
         }
         const selection = children[this.selection]
-        if (selection) {
-            selection.classList.add(SELECTED)
-        }
+        selection?.classList.add(SELECTED)
     }
 
     private clearResults(): void {
@@ -229,12 +222,12 @@ export default class Select extends HTMLElement {
         }
     }
 
-    private optionElement(text: string): HTMLLIElement {
-        const li = document.createElement("li")
-        const button = document.createElement("button")
-        button.innerText = text
-        li.appendChild(button)
-        return li
-    }
+}
 
+function optionElement(text: string): HTMLLIElement {
+    const li = document.createElement("li")
+    const button = document.createElement("button")
+    button.innerText = text
+    li.appendChild(button)
+    return li
 }

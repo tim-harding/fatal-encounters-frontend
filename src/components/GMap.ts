@@ -1,5 +1,5 @@
 import MarkerClusterer from "@google/markerclustererplus"
-import Store from "../store"
+import Store from "../store/Store"
 import fromTemplate from "./fromTemplate"
 
 declare global {

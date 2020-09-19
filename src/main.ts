@@ -1,7 +1,7 @@
 import SelectPill from "./components/SelectPill"
 import Select from "./components/Select"
 import GMap from "./components/GMap"
-import Store from "./store"
+import Store from "./store/Store"
 import { baseUrl } from "./misc"
 
 let store: Store = new Store()

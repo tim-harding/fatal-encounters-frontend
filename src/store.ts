@@ -77,6 +77,7 @@ export default class Store {
 
     constructor() {
         this.prepareEnums()
+        this.fetchLocations()
     }
 
     prepareEnums() {
@@ -87,10 +88,7 @@ export default class Store {
     }
 
     async fetchLocations(): Promise<void> {
-        const url = new URL("/api/incident", baseUrl());
-        const params = url.searchParams;
-        params.append("count", "-1");
-        params.append("rowKind", "position");
+        const url = new URL("/api/incident/position", baseUrl());
         const resolved = await fetch(url.href);
         const json = await resolved.json();
         for (const row of json.rows) {

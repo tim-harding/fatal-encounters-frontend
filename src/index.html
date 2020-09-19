@@ -7,7 +7,7 @@
     <meta name="description" content="Query tool for the Fatal Encounters database">
 
     <link rel="stylesheet" href="public/style.css">
-    <!-- <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet"> -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
 
     <link rel="preload" href="public/fe-select.css" as="style">
     <link rel="preload" href="public/fe-select-pill.css" as="style">
@@ -18,7 +18,7 @@
 </head>
 
 <body>
-    <!-- <fe-gmap></fe-gmap> -->
+    <fe-gmap></fe-gmap>
     <div class="filters">
         <fe-select class="enum" name="agency" id="filter-agency"></fe-select>
         <fe-select class="enum" name="cause" id="filter-cause"></fe-select>
@@ -33,23 +33,9 @@
             <label for="search">Example</label>
             <div id="search-container">
                 <div id="dropdown">
-                    <ul id="options">
-                        <!-- <li>
-                            <button>
-                                This is a long example of a search result
-                            </button>
-                        </li>
-                        <li>
-                            <button>
-                                Here is another long search result
-                            </button>
-                        </li> -->
-                    </ul>
+                    <ul id="options"></ul>
                 </div>
                 <ul id="search-terms">
-                    <!-- <fe-select-pill>
-                        <span slot="content">This is an example</span>
-                    </fe-search-pill> -->
                     <li class="input-container">
                         <input type="text" name="search" id="search">
                     </li>

@@ -11,6 +11,7 @@ function main() {
     defineComponents()
     initializeMap()
     prepareSelectEnumQueries()
+    prepareBoundsElements()
 }
 
 function initializeMap() {
@@ -30,6 +31,55 @@ function prepareSelectEnumQueries() {
         }
         e.delegate = delegate
     }
+}
+
+function prepareBoundsElements() {
+    const age = document.getElementById("filter-age") as Bound
+    age.callbacks = {
+        setMin: setMinAge,
+        setMax: setMaxAge,
+    }
+    const date = document.getElementById("filter-date") as Bound
+    date.callbacks = {
+        setMin: setMinDate,
+        setMax: setMaxDate,
+    }
+}
+
+function setMinDate(value: string): void {
+    store.filter.date.min = parseDate(value)
+}
+
+function setMaxDate(value: string): void {
+    store.filter.date.max = parseDate(value)
+}
+
+function parseDate(value: string): Date | null {
+    const parts = value.split("-")
+    const partInts = parts.map(part => parseInt(part))
+    const valid = partInts.reduce(partIntsReduce, true)
+    if (valid) {
+        const [year, month, day] = partInts
+        return new Date(year, month, day)
+    }
+    return null
+}
+
+function partIntsReduce(previous: boolean, current: number): boolean {
+    return previous && !isNaN(current)
+}
+
+function setMinAge(value: string): void {
+    store.filter.age.min = toInt(value)
+}
+
+function setMaxAge(value: string): void {
+    store.filter.age.max = toInt(value)
+}
+
+function toInt(value: string): number | null {
+    const int = parseInt(value)
+    return isNaN(int) ? null : int
 }
 
 function addToFilterFactory(s: Select): { (id: number): void } {

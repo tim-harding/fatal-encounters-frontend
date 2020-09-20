@@ -34,6 +34,7 @@ export default class Store {
 
     async handleFilterChange(): Promise<void> {
         const url = this.filterUrl()
+        console.log(url.href)
         const response = await fetch(url.href)
         const json = await response.json()
         this.mask.ids = json.rows
@@ -133,15 +134,15 @@ function formatDate(date: Date): string {
     })
     const [
         {
-            value: year,
-        },
-        ,
-        {
             value: month,
         },
         ,
         {
             value: day,
+        },
+        ,
+        {
+            value: year,
         }
     ] = format.formatToParts(date)
     return `${year}-${month}-${day}`

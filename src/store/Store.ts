@@ -2,16 +2,15 @@ import { baseUrl } from "../misc"
 import { Data } from "./data/Data"
 import { Bound } from "./filter/Bound"
 import { Filter } from "./filter/Filter"
-import { FilterPlace } from "./filter/FilterPlace"
+import { Place } from "./filter/Place"
 import { Gender } from "./filter/Gender"
 import { Sort } from "./filter/Sort"
 import { SortOrder } from "./filter/SortOrder"
+import { Mask } from "./Mask"
 
 export default class Store {
 
-    // Make mask its own class and clients subscribe to specific things they want
-    // notifications for 
-    private mask: number[] | null = null
+    readonly mask: Mask = new Mask()
     readonly filter: Filter = new Filter()
     readonly data: Data = new Data()
 
@@ -36,15 +35,16 @@ export default class Store {
     get markers(): google.maps.Marker[] {
         const out: google.maps.Marker[] = []
         const positions = this.data.positions
-        if (this.mask) {
-            for (const id of this.mask) {
+        const mask = this.mask.ids
+        if (mask) {
+            for (const id of mask) {
                 const position = positions.get(id)
                 if (position) {
                     out.push(position)
                 }
             }
         } else {
-            for (const marker of positions.values()) {
+            for (const marker of positions.values) {
                 out.push(marker)
             }
         }
@@ -55,7 +55,7 @@ export default class Store {
         const url = this.filterUrl()
         const response = await fetch(url.href)
         const json = await response.json()
-        this.mask = json.rows
+        this.mask.ids = json.rows
     }
 
     filterUrl(): URL {
@@ -85,7 +85,7 @@ export default class Store {
 
 }
 
-function addPlaceFilter(place: FilterPlace, params: URLSearchParams): void {
+function addPlaceFilter(place: Place, params: URLSearchParams): void {
     const table = place.isCity ? "city" : "state"
     idsFilter(table, place.ids, params)
 }

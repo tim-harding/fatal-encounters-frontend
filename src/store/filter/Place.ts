@@ -1,7 +1,6 @@
 import { PubSub } from "../shared/PubSub";
 
-
-export class FilterPlace extends PubSub {
+export class Place extends PubSub {
 
     private cities: number[] = []
     private states: number[] = []

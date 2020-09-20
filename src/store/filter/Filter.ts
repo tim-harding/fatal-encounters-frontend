@@ -3,18 +3,42 @@ import { PubSub } from "../shared/PubSub";
 import { Gender } from "./Gender";
 import { FilterPlace } from "./FilterPlace";
 import { FilterEnums } from "./FilterEnums";
+import { Sort } from "./Sort";
+import { SortOrder } from "./SortOrder";
 
 export class Filter extends PubSub {
 
     private _name: string = "";
 
-    get name() {
+    get name(): string {
         return this._name;
     }
 
     set name(value: string) {
         this._name = value;
         this.publish();
+    }
+
+    private _sort: Sort = Sort.date
+
+    get sort(): Sort {
+        return this._sort
+    }
+
+    set sort(value: Sort) {
+        this._sort = value
+        this.publish()
+    }
+
+    private _sortOrder: SortOrder = SortOrder.ascending
+
+    get sortOrder(): SortOrder {
+        return this._sortOrder
+    }
+
+    set sortOrder(value: SortOrder) {
+        this._sortOrder = value
+        this.publish()
     }
 
     private _gender: Gender = Gender.either;

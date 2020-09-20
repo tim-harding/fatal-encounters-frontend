@@ -30,4 +30,8 @@ export class FilterEnums extends PubSub {
         return this.enums.get(e);
     }
 
+    get entries(): IterableIterator<[string, number[]]> {
+        return this.enums.entries()
+    }
+
 }

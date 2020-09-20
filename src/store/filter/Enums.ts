@@ -1,33 +1,33 @@
 import { PubSub } from "../shared/PubSub";
 import ENUM_TABLES from "../shared/enumTables";
 
-export class FilterEnums extends PubSub {
+export class Enums extends PubSub {
 
-    private enums: Map<string, number[]> = new Map();
+    private enums: Map<string, number[]> = new Map()
 
     constructor() {
         super();
         for (const table of ENUM_TABLES) {
-            this.enums.set(table, []);
+            this.enums.set(table, [])
         }
     }
 
     add(e: string, id: number): void {
-        this.enums.get(e)?.push(id);
-        this.publish();
+        this.enums.get(e)?.push(id)
+        this.publish()
     }
 
     remove(e: string, id: number): void {
-        const table = this.enums.get(e);
-        const i = table?.indexOf(id);
-        if (i) {
-            table?.splice(i, 1);
+        const table = this.enums.get(e)
+        const i = table?.indexOf(id)
+        if (i != undefined) {
+            table?.splice(i, 1)
         }
-        this.publish();
+        this.publish()
     }
 
     get(e: string): number[] | undefined {
-        return this.enums.get(e);
+        return this.enums.get(e)
     }
 
     get entries(): IterableIterator<[string, number[]]> {

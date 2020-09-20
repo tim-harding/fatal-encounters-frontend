@@ -2,7 +2,7 @@ import { Bound } from "./Bound";
 import { PubSub } from "../shared/PubSub";
 import { Gender } from "./Gender";
 import { Place } from "./Place";
-import { FilterEnums } from "./Enums";
+import { Enums } from "./Enums";
 import { Sort } from "./Sort";
 import { SortOrder } from "./SortOrder";
 
@@ -55,7 +55,7 @@ export class Filter extends PubSub {
     readonly age: Bound<number> = new Bound();
     readonly date: Bound<Date> = new Bound();
     readonly place: Place = new Place();
-    readonly enums: FilterEnums = new FilterEnums();
+    readonly enums: Enums = new Enums();
 
     constructor() {
         super();

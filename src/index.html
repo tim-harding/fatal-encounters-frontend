@@ -11,8 +11,8 @@
 
     <link rel="preload" href="public/fe-select.css" as="style">
     <link rel="preload" href="public/fe-select-pill.css" as="style">
-    <link rel="preload" href="public/fe-spinner.css" as="style">
     <link rel="preload" href="public/fe-gmap.css" as="style">
+    <link rel="preload" href="public/fe-bound.css" as="style">
 
     <title>Fatal Encounters</title>
 </head>
@@ -25,7 +25,18 @@
         <fe-select class="enum" name="county" id="filter-county"></fe-select>
         <fe-select class="enum" name="race" id="filter-race"></fe-select>
         <fe-select class="enum" name="use-of-force" id="filter-use-of-force"></fe-select>
+        <!-- <fe-select name="place" id="filter-place"></fe-select> -->
     </div>
+    <fe-bound>
+        <span slot="legend">
+            Age
+        </span>
+    </fe-bound>
+    <fe-bound type="date">
+        <span slot="legend">
+            Date
+        </span>
+    </fe-bound>
 
     <template id="fe-select-template">
         <link rel="stylesheet" href="public/fe-select.css">
@@ -51,9 +62,10 @@
                 <span>Example</span>
             </slot>
             <button id="remove-button">
-                <svg role="img" width="24px" height="24px" viewBox="0 0 24 24" stroke="black" stroke-width="2" fill="none">
+                <svg role="img" width="16px" height="16px" viewBox="0 0 8 8" stroke="black" stroke-width="1">
                     <title>Remove</title>
-                    <path d="M6.34314575 6.34314575L17.6568542 17.6568542M6.34314575 17.6568542L17.6568542 6.34314575" />
+                    <line x1="1" y1="1" x2="7" y2="7"></line>
+                    <line x1="1" y1="7" x2="7" y2="1"></line>
                 </svg>
             </button>
         </span>
@@ -63,6 +75,30 @@
         <link rel="stylesheet" href="public/fe-gmap.css">
         <div id="map-target"></div>
     </template>
+
+    <template id="fe-bound-template">
+        <link rel="stylesheet" href="public/fe-bound.css">
+        <!-- These should be real fieldset and legend elements,
+        but I can't get the styling to behave. -->
+        <div class="fieldset">
+            <div class="legend">
+                <slot name="legend">
+                    Example
+                </slot>
+            </div>
+            <div class="inputs">
+                <div class="labeled-input">
+                    <label for="min">Min</label>
+                    <input type="number" name="min" id="min">
+                </div>
+                <div class="labeled-input">
+                    <label for="max">Max</label>
+                    <input type="number" name="max" id="max">
+                </div>
+            </div>
+        </div>
+    </template>
+
 </body>
 
 </html>

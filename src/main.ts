@@ -3,6 +3,7 @@ import Select from "./components/Select"
 import GMap from "./components/GMap"
 import Store from "./store/Store"
 import { baseUrl } from "./misc"
+import Bound from "./components/Bound"
 
 let store: Store = new Store()
 
@@ -47,6 +48,7 @@ function defineComponents() {
     customElements.define(Select.TAG, Select)
     customElements.define(SelectPill.TAG, SelectPill)
     customElements.define(GMap.TAG, GMap)
+    customElements.define(Bound.TAG, Bound)
 }
 
 function queryForSelectEnumFactory(s: Select): { (): string } {

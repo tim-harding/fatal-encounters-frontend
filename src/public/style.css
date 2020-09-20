@@ -1,15 +1,24 @@
 @import "general.css";
 
+:root {
+    font-family: 'Roboto', sans-serif;
+}
+
 fe-gmap {
     height: 500px;
+    margin-bottom: 2rem;
 }
 
 fe-select {
-    margin: 2rem;
+    margin-bottom: 2rem;
+}
+
+fe-bound {
+    margin-bottom: 1rem;
 }
 
 body {
-    width: 100%;
+    padding: 2rem;
 }
 
 .filters {

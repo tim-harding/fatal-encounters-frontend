@@ -84,7 +84,6 @@ main {
 	font-size: 100%;
     font: inherit;
     text-decoration: none;
-    position: relative;
 }
 
 a:focus,
@@ -150,8 +149,4 @@ main {
 ol,
 ul {
     list-style: none;
-}
-
-:root {
-    font-family: 'Roboto', sans-serif;
 }

@@ -21,34 +21,15 @@ export default class Store {
 
     async fetchPositions(): Promise<void> {
         const url = urlWith("position")
-        const resolved = await fetch(url.href);
-        const json = await resolved.json();
+        const resolved = await fetch(url.href)
+        const json = await resolved.json()
         for (const row of json.rows) {
+            // Destructure from Proxy
             const { lat, lng } = row.position
-            const marker = new google.maps.Marker({
-                position: new google.maps.LatLng(lat, lng),
-            })
-            this.data.positions.set(row.id, marker)
+            // Create plain old object
+            const position = { lat, lng }
+            this.data.positions.set(row.id, position)
         }
-    }
-
-    get markers(): google.maps.Marker[] {
-        const out: google.maps.Marker[] = []
-        const positions = this.data.positions
-        const mask = this.mask.ids
-        if (mask) {
-            for (const id of mask) {
-                const position = positions.get(id)
-                if (position) {
-                    out.push(position)
-                }
-            }
-        } else {
-            for (const marker of positions.values) {
-                out.push(marker)
-            }
-        }
-        return out
     }
 
     async handleFilterChange(): Promise<void> {

@@ -4,13 +4,14 @@ import { City } from "./City";
 import ENUM_TABLES from "../shared/enumTables"
 import PubSubMap from "../shared/PubSubMap";
 import { PubSub } from "../shared/PubSub";
+import { Position } from "./Position";
 
 export type Rows<T> = PubSubMap<number, T>
 
 export class Data extends PubSub {
 
     readonly incidents: Rows<Incident> = new PubSubMap()
-    readonly positions: Rows<google.maps.Marker> = new PubSubMap()
+    readonly positions: Rows<Position> = new PubSubMap()
     readonly cities: Rows<City> = new PubSubMap()
     readonly states: Rows<State> = new PubSubMap()
     readonly enums: Map<string, Rows<string>> = new Map()

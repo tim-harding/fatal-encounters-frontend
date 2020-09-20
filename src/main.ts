@@ -7,15 +7,14 @@ import { baseUrl } from "./misc"
 let store: Store = new Store()
 
 function main() {
-    store.listeners.push(handlePositions)
     defineComponents()
+    initializeMap()
     prepareSelectEnumQueries()
 }
 
-function handlePositions() {
+function initializeMap() {
     const map = document.querySelector("fe-gmap") as GMap
     map.store = store
-    map.setMarkers(store.markers)
 }
 
 function prepareSelectEnumQueries() {

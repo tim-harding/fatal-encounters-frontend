@@ -80,8 +80,8 @@
         <link rel="stylesheet" href="public/fe-bound.css">
         <!-- These should be real fieldset and legend elements,
         but I can't get the styling to behave. -->
-        <div class="fieldset">
-            <div class="legend">
+        <div id="fieldset" role="group" aria-labelledby="legend">
+            <div id="legend">
                 <slot name="legend">
                     Example
                 </slot>
